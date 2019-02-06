@@ -1,0 +1,14 @@
+server:
+    contextPath: /cabmgmt
+    port: 8081
+
+spring:
+    servlet:
+        multipart:
+            max-file-size: 10MB
+            max-request-size: 10MB
+
+    data:
+      mongodb:
+        database: cab-mgmt
+        uri: mongodb://admin:admincab1@ds034807.mlab.com:34807/cab-mgmt?authSource=cab-mgmt

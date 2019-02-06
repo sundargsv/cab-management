@@ -1,0 +1,84 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.ctl</groupId>
+		<artifactId>cabmgmt-core</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>rest-api</artifactId>
+	<name>REST API  </name>
+	<description>Cab Management Core - REST API module</description>
+	<properties>
+		<registry>cabmgmt.azurecr.io</registry>
+	</properties>
+
+	<dependencies>
+		<!-- feature dependency -->
+		<dependency>
+			<groupId>com.ctl</groupId>
+			<artifactId>feature</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<!-- as Spring boot web application -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<!-- support Swagger 2 + UI -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+		</dependency>
+
+		<!-- Apache common math -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-math3</artifactId>
+			<version>3.6</version>
+		</dependency>
+
+	</dependencies>
+
+	<!-- build configuration -->
+	<build>
+		<finalName>core-api</finalName>
+		<plugins>
+			<!-- repackage as spring boot after compilation -->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.4.12</version>
+				<configuration>
+					<imageName>${registry}/core-api</imageName>
+					<registryUrl>https://${registry}</registryUrl>
+					<serverId>cabmgmt-core</serverId>
+					<dockerDirectory>${basedir}/src/main/docker</dockerDirectory>
+					<resources>
+						<resource>
+							<targetPath>/</targetPath>
+							<directory>${project.build.directory}</directory>
+							<include>${project.build.finalName}.jar</include>
+						</resource>
+					</resources>
+					<forceTags>true</forceTags>
+					<pushImage>true</pushImage>
+					<imageTags>
+						<imageTag>${project.version}</imageTag>
+					</imageTags>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

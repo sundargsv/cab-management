@@ -1,0 +1,137 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.sundar</groupId>
+	<artifactId>cabmgmt-core</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>Cab Management Core</name>
+
+	<modules>
+		<module>rest-api</module>
+		<module>feature</module>
+		<module>persistence</module>
+		<module>service</module>
+	</modules>
+
+	<properties>
+		<java.version>1.8</java.version>
+		<spring.boot.version>2.0.0.M4</spring.boot.version>
+		<lombok.version>1.16.18</lombok.version>
+		<springfox.version>2.7.0</springfox.version>
+		<maven.compiler.plugin.version>3.6.1</maven.compiler.plugin.version>
+	</properties>
+
+	<!-- dependencies that to be inherited for sub module(s) -->
+	<dependencies>
+		<!-- project Lombok -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
+	</dependencies>
+
+	<!-- dependencies management for all sub modules -->
+	<dependencyManagement>
+		<dependencies>
+			<!--  spring boot dependencies -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>${spring.boot.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<!-- project lombok -->
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>${lombok.version}</version>
+			</dependency>
+
+			<!--  Swagger 2 + UI -->
+			<dependency>
+				<groupId>io.springfox</groupId>
+				<artifactId>springfox-swagger2</artifactId>
+				<version>${springfox.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>io.springfox</groupId>
+				<artifactId>springfox-swagger-ui</artifactId>
+				<version>${springfox.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<!-- build plugins to be inheritted by sub module(s) -->
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+			</plugin>
+		</plugins>
+
+		<!-- plugin management -->
+		<pluginManagement>
+			<plugins>
+				<!-- all compiled as 1.8 -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>${maven.compiler.plugin.version}</version>
+					<configuration>
+						<source>${java.version}</source>
+						<target>${java.version}</target>
+					</configuration>
+				</plugin>
+
+				<!-- For sub module that need to be packaged as spring boot jar. Note: need explicitly define in build plugin -->
+				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+					<version>${spring.boot.version}</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>repackage</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+	<!-- repository -->
+	<repositories>
+		<!-- for spring boot M2 (as its not yet release) -->
+		<repository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>https://repo.spring.io/milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>forplay-legacy</id>
+			<url>http://forplay.googlecode.com/svn/mavenrepo</url>
+		</repository>
+	</repositories>
+
+	<!-- plugins repository -->
+	<pluginRepositories>
+		<!-- for spring boot M2 (as its not yet release -->
+		<pluginRepository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>https://repo.spring.io/milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+</project>
